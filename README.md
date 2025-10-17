@@ -1,6 +1,6 @@
 # Sistema Experto para Diagnóstico de Dispositivos IoT
 
-Este proyecto es una API RESTful construida con FastAPI que sirve como un sistema experto para diagnosticar problemas en dispositivos inteligentes del hogar.
+Este proyecto está construido con FastAPI que sirve como un sistema experto para diagnosticar problemas en dispositivos inteligentes del hogar.
 
 ## Estructura del Proyecto
 
