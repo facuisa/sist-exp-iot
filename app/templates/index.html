@@ -8,50 +8,218 @@
 </head>
 <body>
     <div class="container">
+   <div class="acciones">
+      <a class="btn" href="/panel">🏠 Volver al panel principal</a>
+    </div>
         <h1>Sistema Experto para Fallas de Dispositivos IoT</h1>
         <p>Ingrese los hechos observados para obtener un diagnóstico.</p>
 
         <!-- si tenés el endpoint HTML /resultado, dejalo así; si no, cambiá a /diagnosticar -->
         <form action="/resultado" method="post">
             <fieldset>
-                <legend>1. Información del Dispositivo</legend>
-                <label for="nombre">Nombre o Identificador:</label>
-                <input type="text" id="nombre" name="nombre" placeholder="Ej: Cámara del Patio" required>
-
+                <legend>Información del Dispositivo</legend>
+                
                 <label for="tipo">Tipo de Dispositivo:</label>
                 <select id="tipo" name="tipo" required>
                     <option value="" disabled selected>-- Seleccione un tipo --</option>
                     {% for dispositivo in dispositivos %}
-                        <!-- Para Enum: .value (string) para el value y .name para el label -->
                         <option value="{{ dispositivo.value }}">{{ dispositivo.name.replace('_', ' ')|title }}</option>
                     {% endfor %}
+            
                 </select>
+
+                <div id="otro_dispositivo_wrapper" style="display:none; margin-top: 20px;">
+                    <label for="nombre">Nombre del dispositivo "Otro":</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Ej: Smart TV, Router, etc.">
+                </div>
             </fieldset>
 
-            <fieldset>
-                <legend>2. Hechos Observados (Síntomas)</legend>
+<fieldset id="fieldset_sintomas" style="display:none;">
+                <legend>Hechos Observados (Síntomas)</legend>
+                
                 <div class="sintomas-grid">
                     {% for sintoma in sintomas %}
                     <div class="checkbox-container">
-                        <!-- name="sintomas" para enviar lista; usar .value/.name en Enums -->
                         <input type="checkbox" id="s_{{ sintoma.value }}" name="sintomas" value="{{ sintoma.value }}">
                         <label for="s_{{ sintoma.value }}">{{ sintoma.name.replace('_', ' ')|title }}</label>
                     </div>
                     {% endfor %}
                 </div>
+            
+                <hr style="margin: 20px 0; border: none; border-top: 1px solid #444;">
+            
+                <div class="checkbox-container">
+                    <input type="checkbox" id="toggle_sintoma_otro">
+                    <label for="toggle_sintoma_otro">Agregar síntoma (no listado)</label>
+                </div>
+            
+                <div id="wrapper_sintoma_otro" style="display:none; margin-top: 15px;">
+                    <label for="sintoma_otro_texto_fs2">Por favor, describa ese síntoma:</label>
+                    <textarea 
+                        id="sintoma_otro_texto_fs2" 
+                        name="sintoma_otro_texto" 
+                        rows="4" 
+                        placeholder="Ej: Emite un pitido constante, la luz parpadea en rojo...">
+                    </textarea>
+                </div>
+            
+            </fieldset> <fieldset id="fieldset_otro_sintoma" style="display:none;">
+                <legend>Describir síntomas</legend>
+            
+                <label for="sintoma_otro_texto"></label>
+                <textarea 
+                    id="sintoma_otro_texto" 
+                    name="sintoma_otro_texto" 
+                    rows="4" 
+                    placeholder="Ej: Emite un pitido constante, la luz parpadea en rojo..." 
+                    required>
+                </textarea>
+            
             </fieldset>
+            
+            <fieldset id="fieldset_adicionales" style="display:none;">
+                <legend>Datos Adicionales (Opcional)</legend>
 
-            <fieldset>
-                <legend>3. Datos Adicionales (Opcional)</legend>
-                <label for="intensidad_wifi">Intensidad Señal WiFi (RSSI en dBm):</label>
-                <input type="number" id="intensidad_wifi" name="intensidad_wifi" min="-100" max="0" placeholder="Ej: -75">
+                <div id="wrapper_wifi" style="display:none;">
+                    <label for="intensidad_wifi">Intensidad Señal WiFi (RSSI en dBm):</label>
+                    <input type="number" id="intensidad_wifi" name="intensidad_wifi" min="-100" max="0" placeholder="Ej: -75">
+                </div>
 
-                <label for="tiempo_encendido">Días encendido sin reiniciar:</label>
-                <input type="number" id="tiempo_encendido" name="tiempo_encendido" min="0" placeholder="Ej: 30">
+                <div id="wrapper_dias" style="display:none; margin-top: 15px;">
+                    <label for="tiempo_encendido">Días encendido sin reiniciar:</label>
+                    <input type="number" id="tiempo_encendido" name="tiempo_encendido" min="0" placeholder="Ej: 30">
+                </div>
+
             </fieldset>
 
             <button type="submit">Diagnosticar Falla</button>
         </form>
     </div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    
+    // --- 1. OBTENER TODOS LOS ELEMENTOS ---
+    const selectTipo = document.getElementById('tipo');
+    const wrapperOtroDisp = document.getElementById('otro_dispositivo_wrapper');
+    const inputNombreDisp = document.getElementById('nombre');
+    
+    // Fieldset 2 (Síntomas conocidos)
+    const fieldsetSintomas = document.getElementById('fieldset_sintomas');
+    const checkboxesSintomas = document.querySelectorAll('input[name="sintomas"]');
+    // UI "Otro Síntoma" DENTRO de FS2
+    const toggleSintomaOtro = document.getElementById('toggle_sintoma_otro');
+    const wrapperSintomaOtro = document.getElementById('wrapper_sintoma_otro');
+    const inputSintomaOtroFS2 = document.getElementById('sintoma_otro_texto_fs2');
+
+    // Fieldset 3 (Otro síntoma para "Otro" Dispositivo)
+    const fieldsetOtroSintoma = document.getElementById('fieldset_otro_sintoma');
+    const inputSintomaOtroFS3 = document.getElementById('sintoma_otro_texto');
+
+    // Fieldset 4 (Adicionales)
+    const fieldsetAdicionales = document.getElementById('fieldset_adicionales');
+    const wrapperWifi = document.getElementById('wrapper_wifi');
+    const wrapperDias = document.getElementById('wrapper_dias');
+    
+    // --- 2. DEFINICIÓN DE SÍNTOMAS QUE PIDEN DATOS ---
+    const sintomasWifi = ["error_conexion", "latencia_alta"];
+    const sintomasDias = ["reinicios_frecuentes", "falla_autenticacion"];
+
+    // --- 3. FUNCIÓN: Actualizar FS4 y Exclusión Mutua (DENTRO DE FS2) ---
+    function actualizarSintomasConocidos() {
+      if (!fieldsetAdicionales) return;
+      
+      let mostrarWifi = false;
+      let mostrarDias = false;
+      let algunSintomaConocido = false;
+
+      checkboxesSintomas.forEach(cb => {
+        if (cb.checked) {
+          algunSintomaConocido = true;
+          if (sintomasWifi.includes(cb.value)) mostrarWifi = true;
+          if (sintomasDias.includes(cb.value)) mostrarDias = true;
+        }
+      });
+
+      // Actualizar FS4
+      if (wrapperWifi) wrapperWifi.style.display = mostrarWifi ? 'block' : 'none';
+      if (wrapperDias) wrapperDias.style.display = mostrarDias ? 'block' : 'none';
+      fieldsetAdicionales.style.display = (mostrarWifi || mostrarDias) ? 'block' : 'none';
+
+      // Lógica de exclusión mutua DENTRO de FS2
+      if (toggleSintomaOtro) {
+        toggleSintomaOtro.disabled = algunSintomaConocido;
+      }
+    }
+
+    // --- 4. FUNCIÓN: Al cambiar "Otro Síntoma" (DENTRO DE FS2) ---
+    function enCambioOtroSintomaFS2() {
+      if (!toggleSintomaOtro || !wrapperSintomaOtro || !inputSintomaOtroFS2) return;
+
+      if (toggleSintomaOtro.checked) {
+        wrapperSintomaOtro.style.display = 'block';
+        inputSintomaOtroFS2.required = true;
+        // Lógica de exclusión: deshabilitar lista y FS4
+        checkboxesSintomas.forEach(cb => { cb.disabled = true; });
+        if (fieldsetAdicionales) fieldsetAdicionales.style.display = 'none';
+      } else {
+        wrapperSintomaOtro.style.display = 'none';
+        inputSintomaOtroFS2.required = false;
+        inputSintomaOtroFS2.value = '';
+        // Habilitar lista
+        checkboxesSintomas.forEach(cb => { cb.disabled = false; });
+      }
+    }
+
+    // --- 5. FUNCIÓN PRINCIPAL: Al cambiar "Tipo de Dispositivo" (FS1) ---
+    function enCambioDeTipo() {
+      if (!selectTipo) return;
+      const tipoSeleccionado = selectTipo.value;
+
+      // Lógica de "Otro Dispositivo" (dentro de FS1)
+      if (wrapperOtroDisp && inputNombreDisp) {
+        if (tipoSeleccionado === 'otro') {
+          wrapperOtroDisp.style.display = 'block';
+          inputNombreDisp.required = true;
+        } else {
+          wrapperOtroDisp.style.display = 'none';
+          inputNombreDisp.required = false;
+          inputNombreDisp.value = '';
+        }
+      }
+
+      // --- LÓGICA DE VISIBILIDAD DE FIELDSETS ---
+      if (tipoSeleccionado === "") { // Nada seleccionado
+        if (fieldsetSintomas) fieldsetSintomas.style.display = 'none';
+        if (fieldsetOtroSintoma) fieldsetOtroSintoma.style.display = 'none';
+        if (fieldsetAdicionales) fieldsetAdicionales.style.display = 'none';
+        if (inputSintomaOtroFS3) inputSintomaOtroFS3.required = false;
+      
+      } else if (tipoSeleccionado === 'otro') { // "Otro" Dispositivo seleccionado
+        if (fieldsetSintomas) fieldsetSintomas.style.display = 'none';      // Oculta FS2
+        if (fieldsetOtroSintoma) fieldsetOtroSintoma.style.display = 'block'; // Muestra FS3
+        if (fieldsetAdicionales) fieldsetAdicionales.style.display = 'none'; // Oculta FS4
+        if (inputSintomaOtroFS3) inputSintomaOtroFS3.required = true;
+      
+      } else { // Un dispositivo CONOCIDO seleccionado
+        if (fieldsetSintomas) fieldsetSintomas.style.display = 'block';   // Muestra FS2
+        if (fieldsetOtroSintoma) fieldsetOtroSintoma.style.display = 'none'; // Oculta FS3
+        if (inputSintomaOtroFS3) inputSintomaOtroFS3.required = false;
+        actualizarSintomasConocidos(); // Decide si muestra FS4 y maneja exclusión en FS2
+      }
+    }
+
+    // --- 6. ASIGNAR LOS EVENTOS ---
+    if (selectTipo) selectTipo.addEventListener('change', enCambioDeTipo);
+    if (toggleSintomaOtro) toggleSintomaOtro.addEventListener('change', enCambioOtroSintomaFS2);
+    checkboxesSintomas.forEach(cb => {
+      cb.addEventListener('change', actualizarSintomasConocidos);
+    });
+
+    // --- 7. EJECUTAR AL INICIO ---
+    enCambioDeTipo(); // Establece el estado inicial correcto
+    enCambioOtroSintomaFS2();
+
+  });
+</script>
 </body>
 </html>

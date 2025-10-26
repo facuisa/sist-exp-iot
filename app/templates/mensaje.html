@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gracias por su colaboración</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+    <style>
+        /* Estilos específicos para esta página */
+        .container { max-width: 700px; text-align: left; }
+        h1 { font-size: 1.8rem; margin-bottom: 20px; }
+        p { font-size: 1.1rem; line-height: 1.6; color: #ccc; }
+        hr { border: none; height: 1px; background-color: #444; margin: 15px 0; }
+        
+        .support-contact {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #03dac6; /* Color de acento de tu CSS */
+            margin-top: 25px;
+        }
+        .support-phone {
+            color: #aaa;
+            margin-top: 15px;
+            font-size: 1rem;
+        }
+        .footer-note {
+            color: #aaa;
+            font-style: italic;
+            margin-top: 30px;
+        }
+        .btn-container { margin-top: 35px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gracias por su colaboración</h1>
+        <hr>
+        <p>Hemos registrado la información sobre su dispositivo. Nuestro sistema aún no puede diagnosticarlo automáticamente.</p>
+        
+        <p class="support-contact">Por favor, contáctese con un técnico para obtener asistencia personalizada.</p>
+        <p class="support-phone">Teléfono de Soporte: (2964) 555-1234</p>
+        
+        <p class="footer-note">Estaremos trabajando para incorporar futuras soluciones a partir de su consulta.</p>
+        
+        <div class="btn-container">
+            <a href="/nuevo" class="btn btn-prim">Realizar otro diagnóstico</a>
+        </div>
+    </div>
+</body>
+</html>

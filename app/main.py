@@ -382,117 +382,137 @@ def ver_formulario(request: Request):
     )
 
 
+def _parse_int(s: Optional[str]) -> Optional[int]:
+    if s is None or str(s).strip() == "":
+        return None
+    try:
+        return int(str(s))
+    except Exception:
+        return None
+# -----------------------------------------------------------------
+
+
 @app.post("/resultado", response_class=HTMLResponse)
 def resultado_html(
     request: Request,
-    nombre: str = Form(...),
-    tipo: str = Form(...),
+    nombre: Optional[str] = Form(None), 
+    tipo: str = Form(...), 
     sintomas: Optional[List[str]] = Form(None),
     intensidad_wifi: Optional[str] = Form(None),
     tiempo_encendido: Optional[str] = Form(None),
+    # ⬇️ 1. ACEPTAMOS UNA LISTA DE STRINGS, NO SOLO UNO ⬇️
+    sintoma_otro_texto: Optional[List[str]] = Form(None)  # <-- CAMBIO
 ):
-    # construir el dispositivo desde el form
-    dispositivo = DispositivoInput(
-        nombre=nombre,
-        tipo=TipoDispositivo(tipo),
-        sintomas=[Sintoma(s) for s in (sintomas or [])],
-    )
+    
+    # --- Lógica de validación (Tipo y Nombre) ---
+    try:
+        tipo_enum = TipoDispositivo(tipo)
+    except ValueError:
+        return TEMPLATES.TemplateResponse("resultado.html", {"request": request, "error": "Tipo de dispositivo inválido."})
 
+    nombre_final: str
+    if tipo_enum == TipoDispositivo.OTRO:
+        if not nombre or not nombre.strip():
+            return TEMPLATES.TemplateResponse("resultado.html", {"request": request, "error": "Debe especificar un nombre para el tipo 'Otro'."}, status_code=400)
+        nombre_final = nombre.strip()
+    else:
+        nombre_final = tipo_enum.name.replace('_', ' ').title()
+    # --- Fin de la lógica ---
+
+    # --- ⬇️ 2. NUEVA LÓGICA PARA BUSCAR EL SÍNTOMA "OTRO" ⬇️ ---
+    sintoma_otro_final = ""
+    if sintoma_otro_texto:
+        # Buscamos en la lista el primer valor que tenga texto
+        for s in sintoma_otro_texto:
+            if s and s.strip():
+                sintoma_otro_final = s.strip()
+                break
+    
+    # Comprobamos si es un caso manual
+    es_caso_manual = (tipo_enum == TipoDispositivo.OTRO) or bool(sintoma_otro_final) # <-- CAMBIO
+
+    if es_caso_manual:
+        # Si es un caso manual, solo lo guardamos y mostramos el mensaje.
+        try:
+            from datetime import datetime
+            
+            sintomas_para_guardar = [Sintoma(s).value for s in (sintomas or [])]
+            # ⬇️ 3. USAMOS LA VARIABLE 'sintoma_otro_final' ⬇️
+            if sintoma_otro_final:
+                sintomas_para_guardar.append(f"OTRO: {sintoma_otro_final}") # <-- CAMBIO
+
+            if tipo_enum == TipoDispositivo.OTRO and not sintomas_para_guardar:
+                 sintomas_para_guardar.append("OTRO: (Descripción no provista)")
+
+            _append_case({
+                "nombre": nombre_final,
+                "fecha": datetime.now().strftime("%Y-%m-%d %H:%M"),
+                "tipo_dispositivo": tipo_enum.value,
+                "sintomas": sintomas_para_guardar,
+                "categoria_top": "manual",
+                "criticidad": "desconocida",
+            })
+        except Exception:
+            pass 
+
+        # Mostramos la página de "Gracias" (mensaje.html)
+        return TEMPLATES.TemplateResponse("mensaje.html", {"request": request})
+    
+    # --- ⬆️ FIN DE LA LÓGICA CORREGIDA ⬆️ ---
+
+
+    # --- (El resto del código es para casos AUTOMÁTICOS) ---
+    
+    dispositivo = DispositivoInput(
+        nombre=nombre_final,
+        tipo=tipo_enum,
+        sintomas=[Sintoma(s) for s in (sintomas or [])],
+        intensidad_señal_wifi=_parse_int(intensidad_wifi),
+        tiempo_encendido_dias=_parse_int(tiempo_encendido),
+    )
+    
     diagnosticos = base_conocimiento.obtener_diagnosticos(dispositivo)
     if not diagnosticos:
-        return TEMPLATES.TemplateResponse(
-            "resultado.html",
-            {"request": request, "error": "No se encontraron diagnósticos para los síntomas ingresados."},
-            status_code=404,
-        )
+        pass 
 
     criticidad = base_conocimiento.calcular_criticidad(dispositivo, diagnosticos)
     requiere_alerta = (criticidad == NivelCriticidad.CRITICA)
-    diag_principal = diagnosticos[0]
-    recomendacion = f"[{diag_principal.categoria.value.upper()}] {diag_principal.solucion}"
-    if requiere_alerta:
-        recomendacion = f"⚠️ URGENTE: {recomendacion}"
+    
+    recomendacion = "No hay diagnóstico automático para los síntomas ingresados."
+    categoria_top = "desconocida"
 
-    # guardar caso para la tabla/estadísticas
+    if diagnosticos:
+        diag_principal = diagnosticos[0]
+        recomendacion = f"[{diag_principal.categoria.value.upper()}] {diag_principal.solucion}"
+        if requiere_alerta:
+            recomendacion = f"⚠️ URGENTE: {recomendacion}"
+        categoria_top = diag_principal.categoria.value
+
+    # --- Lógica de Guardado (para casos automáticos) ---
     try:
         from datetime import datetime
+        sintomas_para_guardar = [s.value for s in dispositivo.sintomas]
+        
         _append_case({
             "nombre": dispositivo.nombre,
             "fecha": datetime.now().strftime("%Y-%m-%d %H:%M"),
             "tipo_dispositivo": dispositivo.tipo.value,
-            "sintomas": [s.value for s in dispositivo.sintomas],
-            "categoria_top": diag_principal.categoria.value,
+            "sintomas": sintomas_para_guardar,
+            "categoria_top": categoria_top,
             "criticidad": criticidad.value,
         })
     except Exception:
-        pass
+        pass 
 
     resultado = Resultado(
         dispositivo=dispositivo.nombre,
         tipo=dispositivo.tipo,
         criticidad=criticidad,
-        diagnosticos=diagnosticos[:5],
+        diagnosticos=diagnosticos[:5] if diagnosticos else [],
         recomendacion_principal=recomendacion,
         requiere_alerta=requiere_alerta,
     )
     return TEMPLATES.TemplateResponse("resultado.html", {"request": request, "resultado": resultado})
-from typing import Optional, List
-from fastapi import Form
-
-@app.post("/resultado", response_class=HTMLResponse)
-def resultado_html(
-    request: Request,
-    nombre: str = Form(...),
-    tipo: str = Form(...),
-    sintomas: Optional[List[str]] = Form(None),
-    intensidad_wifi: Optional[str] = Form(None),
-    tiempo_encendido: Optional[str] = Form(None),
-):
-    dispositivo = DispositivoInput(
-        nombre=nombre,
-        tipo=TipoDispositivo(tipo),
-        sintomas=[Sintoma(s) for s in (sintomas or [])],
-    )
-
-    diagnosticos = base_conocimiento.obtener_diagnosticos(dispositivo)
-    if not diagnosticos:
-        return TEMPLATES.TemplateResponse(
-            "resultado.html",
-            {"request": request, "error": "No se encontraron diagnósticos para los síntomas ingresados."},
-            status_code=404,
-        )
-
-    criticidad = base_conocimiento.calcular_criticidad(dispositivo, diagnosticos)
-    requiere_alerta = (criticidad == NivelCriticidad.CRITICA)
-    diag_principal = diagnosticos[0]
-    recomendacion = f"[{diag_principal.categoria.value.upper()}] {diag_principal.solucion}"
-    if requiere_alerta:
-        recomendacion = f"⚠️ URGENTE: {recomendacion}"
-
-    # guardar caso para tabla/estadísticas
-    try:
-        from datetime import datetime
-        _append_case({
-            "nombre": dispositivo.nombre,
-            "fecha": datetime.now().strftime("%Y-%m-%d %H:%M"),
-            "tipo_dispositivo": dispositivo.tipo.value,
-            "sintomas": [s.value for s in dispositivo.sintomas],
-            "categoria_top": diag_principal.categoria.value,
-            "criticidad": criticidad.value,
-        })
-    except Exception:
-        pass
-
-    resultado = Resultado(
-        dispositivo=dispositivo.nombre,
-        tipo=dispositivo.tipo,
-        criticidad=criticidad,
-        diagnosticos=diagnosticos[:5],
-        recomendacion_principal=recomendacion,
-        requiere_alerta=requiere_alerta,
-    )
-    return TEMPLATES.TemplateResponse("resultado.html", {"request": request, "resultado": resultado})
-
 #Borrar casos
 @app.post("/reset-casos")
 def reset_casos():

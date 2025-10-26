@@ -21,18 +21,25 @@
                 <p>{{ resultado.recomendacion_principal }}</p>
             </div>
 
-            <h3>Posibles Causas (ordenadas por probabilidad)</h3>
-            <div class="diagnosticos-container">
-                {% for diag in resultado.diagnosticos %}
-                <div class="diagnostico-card">
-                    <h4>{{ diag.causa.value }} ({{ diag.probabilidad }}%)</h4>
-                    <p><strong>Categoría:</strong>
-                        <span class="categoria-{{ diag.categoria.value }}">{{ diag.categoria.value|title }}</span>
-                    </p>
-                    <p><strong>Solución Sugerida:</strong> {{ diag.solucion }}</p>
-                </div>
-                {% endfor %}
+        <details class="detalles-diagnostico">
+        
+        <summary>
+            Posibles Causas (ordenadas por probabilidad)
+        </summary>
+        
+        <div class="diagnosticos-container" style="margin-top: 20px;">
+            {% for diag in resultado.diagnosticos %}
+            <div class="diagnostico-card">
+                <h4>{{ diag.causa }} ({{ diag.probabilidad }}%)</h4>
+                <p><strong>Categoría:</strong>
+                    <span class="categoria-{{ diag.categoria.value }}">{{ diag.categoria.value|title }}</span>
+                </p>
+                <p><strong>Solución Sugerida:</strong> {{ diag.solucion }}</p>
             </div>
+            {% endfor %}
+        </div>
+
+    </details>
 
         {% elif error %}
             <div class="error-box">

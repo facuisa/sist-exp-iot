@@ -15,7 +15,8 @@ class TipoDispositivo(str, Enum):
     CERRADURA_INTELIGENTE = "cerradura_inteligente"
     ASISTENTE_VOZ = "asistente_voz"
     SENSOR_AGUA = "sensor_agua"
-
+    OTRO = "otro"
+    
 class Sintoma(str, Enum):
     NO_RESPONDE = "no_responde"
     ERROR_CONEXION = "error_conexion"

@@ -109,5 +109,292 @@
     ],
     "categoria_top": "configuracion",
     "criticidad": "media"
+  },
+  {
+    "nombre": "bomba de agua",
+    "fecha": "2025-10-25 11:06",
+    "tipo_dispositivo": "sensor_agua",
+    "sintomas": [
+      "no_responde"
+    ],
+    "categoria_top": "energia",
+    "criticidad": "critica"
+  },
+  {
+    "nombre": "Termostato",
+    "fecha": "2025-10-25 12:43",
+    "tipo_dispositivo": "termostato",
+    "sintomas": [
+      "no_responde"
+    ],
+    "categoria_top": "energia",
+    "criticidad": "alta"
+  },
+  {
+    "nombre": "Termostato",
+    "fecha": "2025-10-25 13:06",
+    "tipo_dispositivo": "termostato",
+    "sintomas": [
+      "no_responde",
+      "latencia_alta",
+      "OTRO: la luz no funciona"
+    ],
+    "categoria_top": "energia",
+    "criticidad": "alta"
+  },
+  {
+    "nombre": "asdasd",
+    "fecha": "2025-10-25 14:29",
+    "tipo_dispositivo": "otro",
+    "sintomas": [
+      "OTRO: asdasd"
+    ],
+    "categoria_top": "desconocida",
+    "criticidad": "baja"
+  },
+  {
+    "nombre": "Termostato",
+    "fecha": "2025-10-25 14:35",
+    "tipo_dispositivo": "termostato",
+    "sintomas": [
+      "no_responde",
+      "latencia_alta"
+    ],
+    "categoria_top": "energia",
+    "criticidad": "alta"
+  },
+  {
+    "nombre": "bomba de agua",
+    "fecha": "2025-10-25 14:36",
+    "tipo_dispositivo": "otro",
+    "sintomas": [
+      "OTRO: no enciende"
+    ],
+    "categoria_top": "manual",
+    "criticidad": "desconocida"
+  },
+  {
+    "nombre": "Termostato",
+    "fecha": "2025-10-25 14:36",
+    "tipo_dispositivo": "termostato",
+    "sintomas": [],
+    "categoria_top": "desconocida",
+    "criticidad": "baja"
+  },
+  {
+    "nombre": "Termostato",
+    "fecha": "2025-10-25 14:36",
+    "tipo_dispositivo": "termostato",
+    "sintomas": [],
+    "categoria_top": "desconocida",
+    "criticidad": "baja"
+  },
+  {
+    "nombre": "Sensor Agua",
+    "fecha": "2025-10-25 14:42",
+    "tipo_dispositivo": "sensor_agua",
+    "sintomas": [],
+    "categoria_top": "desconocida",
+    "criticidad": "baja"
+  },
+  {
+    "nombre": "Cerradura Inteligente",
+    "fecha": "2025-10-25 14:42",
+    "tipo_dispositivo": "cerradura_inteligente",
+    "sintomas": [
+      "consumo_anomalo"
+    ],
+    "categoria_top": "hardware",
+    "criticidad": "critica"
+  },
+  {
+    "nombre": "wer",
+    "fecha": "2025-10-25 14:43",
+    "tipo_dispositivo": "otro",
+    "sintomas": [
+      "consumo_anomalo",
+      "OTRO: eerwer"
+    ],
+    "categoria_top": "manual",
+    "criticidad": "desconocida"
+  },
+  {
+    "nombre": "wer",
+    "fecha": "2025-10-25 14:43",
+    "tipo_dispositivo": "otro",
+    "sintomas": [
+      "consumo_anomalo",
+      "OTRO: eerwer"
+    ],
+    "categoria_top": "manual",
+    "criticidad": "desconocida"
+  },
+  {
+    "nombre": "Camara Seguridad",
+    "fecha": "2025-10-25 14:45",
+    "tipo_dispositivo": "camara_seguridad",
+    "sintomas": [
+      "OTRO: sadasd"
+    ],
+    "categoria_top": "manual",
+    "criticidad": "desconocida"
+  },
+  {
+    "nombre": "Asistente Voz",
+    "fecha": "2025-10-25 15:14",
+    "tipo_dispositivo": "asistente_voz",
+    "sintomas": [
+      "error_conexion",
+      "reinicios_frecuentes",
+      "latencia_alta",
+      "falla_autenticacion"
+    ],
+    "categoria_top": "red",
+    "criticidad": "alta"
+  },
+  {
+    "nombre": "bomba de agua",
+    "fecha": "2025-10-25 15:15",
+    "tipo_dispositivo": "otro",
+    "sintomas": [
+      "OTRO: hadgjaasd"
+    ],
+    "categoria_top": "manual",
+    "criticidad": "desconocida"
+  },
+  {
+    "nombre": "Termostato",
+    "fecha": "2025-10-25 15:16",
+    "tipo_dispositivo": "termostato",
+    "sintomas": [
+      "OTRO: descripcion"
+    ],
+    "categoria_top": "manual",
+    "criticidad": "desconocida"
+  },
+  {
+    "nombre": "Termostato",
+    "fecha": "2025-10-25 15:18",
+    "tipo_dispositivo": "termostato",
+    "sintomas": [
+      "error_conexion"
+    ],
+    "categoria_top": "red",
+    "criticidad": "baja"
+  },
+  {
+    "nombre": "Termostato",
+    "fecha": "2025-10-25 15:22",
+    "tipo_dispositivo": "termostato",
+    "sintomas": [
+      "no_responde",
+      "latencia_alta"
+    ],
+    "categoria_top": "energia",
+    "criticidad": "alta"
+  },
+  {
+    "nombre": "Termostato",
+    "fecha": "2025-10-25 15:31",
+    "tipo_dispositivo": "termostato",
+    "sintomas": [
+      "OTRO: no recibe señal"
+    ],
+    "categoria_top": "manual",
+    "criticidad": "desconocida"
+  },
+  {
+    "nombre": "Termostato",
+    "fecha": "2025-10-25 20:36",
+    "tipo_dispositivo": "termostato",
+    "sintomas": [
+      "latencia_alta"
+    ],
+    "categoria_top": "red",
+    "criticidad": "baja"
+  },
+  {
+    "nombre": "Cerradura Inteligente",
+    "fecha": "2025-10-25 20:37",
+    "tipo_dispositivo": "cerradura_inteligente",
+    "sintomas": [
+      "no_responde",
+      "error_conexion",
+      "falla_autenticacion"
+    ],
+    "categoria_top": "energia",
+    "criticidad": "critica"
+  },
+  {
+    "nombre": "Cerradura Inteligente",
+    "fecha": "2025-10-25 20:49",
+    "tipo_dispositivo": "cerradura_inteligente",
+    "sintomas": [
+      "no_responde",
+      "latencia_alta"
+    ],
+    "categoria_top": "energia",
+    "criticidad": "critica"
+  },
+  {
+    "nombre": "Cerradura Inteligente",
+    "fecha": "2025-10-25 20:50",
+    "tipo_dispositivo": "cerradura_inteligente",
+    "sintomas": [
+      "no_responde",
+      "reinicios_frecuentes",
+      "latencia_alta",
+      "falla_autenticacion"
+    ],
+    "categoria_top": "energia",
+    "criticidad": "critica"
+  },
+  {
+    "nombre": "Termostato",
+    "fecha": "2025-10-25 20:54",
+    "tipo_dispositivo": "termostato",
+    "sintomas": [
+      "no_responde",
+      "latencia_alta"
+    ],
+    "categoria_top": "energia",
+    "criticidad": "alta"
+  },
+  {
+    "nombre": "Luz Inteligente",
+    "fecha": "2025-10-25 20:57",
+    "tipo_dispositivo": "luz_inteligente",
+    "sintomas": [
+      "error_conexion",
+      "consumo_anomalo",
+      "latencia_alta",
+      "falla_autenticacion"
+    ],
+    "categoria_top": "configuracion",
+    "criticidad": "media"
+  },
+  {
+    "nombre": "Termostato",
+    "fecha": "2025-10-25 20:58",
+    "tipo_dispositivo": "termostato",
+    "sintomas": [
+      "reinicios_frecuentes",
+      "latencia_alta",
+      "falla_autenticacion"
+    ],
+    "categoria_top": "hardware",
+    "criticidad": "alta"
+  },
+  {
+    "nombre": "Luz Inteligente",
+    "fecha": "2025-10-25 20:59",
+    "tipo_dispositivo": "luz_inteligente",
+    "sintomas": [
+      "error_conexion",
+      "reinicios_frecuentes",
+      "falla_autenticacion"
+    ],
+    "categoria_top": "configuracion",
+    "criticidad": "media"
   }
 ]

@@ -1,143 +1,44 @@
+/* === CONFIGURACIÓN GLOBAL Y RESET === */
+:root {
+  color-scheme: dark;
+}
+
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background-color: #121212; color: #e0e0e0; line-height: 1.6; margin: 0; padding: 20px;
-}
-.container { max-width: 800px; margin: 0 auto; background-color: #1e1e1e; padding: 25px 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-h1, h2, h3 { color: #bb86fc; padding-bottom: 10px; }
-form { display: flex; flex-direction: column; gap: 25px; }
-fieldset { border: 1px solid #444; border-radius: 6px; padding: 20px; }
-legend { color: #03dac6; font-weight: bold; padding: 0 10px; }
-label { display: block; margin-bottom: 8px; font-weight: bold; }
-input[type="text"], input[type="number"], select { width: 100%; padding: 10px; background-color: #333; border: 1px solid #555; border-radius: 4px; color: #e0e0e0; box-sizing: border-box; }
-button, .boton-volver { background-color: #bb86fc; color: #121212; border: none; padding: 12px 20px; border-radius: 4px; font-size: 16px; font-weight: bold; cursor: pointer; text-align: center; text-decoration: none; display: inline-block; transition: background-color 0.3s; }
-button:hover, .boton-volver:hover { background-color: #a765f1; }
-.sintomas-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
-.checkbox-container { display: flex; align-items: center; }
-.checkbox-container input { margin-right: 10px; }
-
-/* === ESTILOS PARA LA PÁGINA DE RESULTADOS === */
-.resultado-header { padding: 20px; border-radius: 8px; margin-bottom: 20px; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
-.criticidad-critica { background-color: #cf6679; color: #121212; border: 2px solid #ff9e9e; }
-.criticidad-alta { background-color: #ff7043; color: #121212; }
-.criticidad-media { background-color: #ffb74d; color: #121212; }
-.criticidad-baja { background-color: #4db6ac; color: #121212; }
-
-.recomendacion-principal { background-color: #2a2a2a; padding: 15px; border-left: 5px solid #bb86fc; border-radius: 4px; margin-bottom: 20px; }
-.alerta-urgente { border-color: #cf6679; background-color: #4d1d28; }
-.diagnostico-card { background-color: #2c2c2c; padding: 15px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #444; }
-.categoria-red { color: #81d4fa; } .categoria-hardware { color: #ef9a9a; } .categoria-software { color: #a5d6a7; } .categoria-energia { color: #fff59d; } .categoria-configuracion { color: #ce93d8; }
-.error-box { background-color: #b00020; color: white; padding: 20px; border-radius: 8px; }
-
-/* Accesibilidad y foco */
-:focus { outline: 2px solid #03dac6; outline-offset: 2px; }
-
-/* Placeholders y estados */
-input::placeholder { color: #aaaaaa; }
-input:disabled, select:disabled, button:disabled {
-  opacity: .6; cursor: not-allowed;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #121212;
+  color: #e0e0e0;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0; /* El padding se maneja por 'container' o 'wrap' */
 }
 
-/* Checkboxes más visibles */
-.checkbox-container input[type="checkbox"] {
-  width: 18px; height: 18px; accent-color: #bb86fc;
+h1, h2, h3 {
+  color: #bb86fc;
+  padding-bottom: 10px;
+  margin: 0 0 12px;
 }
 
-/* Etiquetas y espaciados más cómodos en index */
-fieldset label + input,
-fieldset label + select { margin-top: 6px; }
-fieldset label { margin-top: 10px; }
-
-/* Cards de diagnóstico */
-.diagnosticos-container { display: grid; gap: 12px; }
-.diagnostico-card h4 { margin: 0 0 6px; color: #e6d6ff; }
-.diagnostico-card p { margin: 4px 0; }
-
-
-/* === FORZAR MODO OSCURO EN STATS === */
-body {
-  background-color: #121212 !important;
-  color: #e0e0e0 !important;
-}
-
-.card {
-  background-color: #1e1e1e !important;
-  border: 1px solid #333 !important;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
-}
-
-.card h3 {
-  color: #bb86fc !important;
-  margin-bottom: 10px !important;
-}
-
-h1 {
-  color: #bb86fc !important;
-}
-
-p, b {
-  color: #e0e0e0 !important;
-}
-
-/* Colores de gráficos Chart.js */
-canvas {
-  background-color: #1e1e1e !important;
+/* === CONTENEDORES PRINCIPALES === */
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+  background-color: #1e1e1e;
+  padding: 25px 40px;
   border-radius: 8px;
-  padding: 5px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
-/* Asegura que los links sean clickeables */
-a { pointer-events: auto; }
-.card a { position: relative; z-index: 2; }
-
-/* Evita overlays invisibles tapando la tarjeta */
-.card::after { content: none; }
-
-.btn.btn-sec {
-  background: #4a0000 !important;
-  border: 1px solid #ff5555 !important;
-  color: #fff !important;
-}
-.btn.btn-sec:hover {
-  background: #700000 !important;
-  border-color: #ff8888 !important;
+.wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
 }
 
+/* === BOTONES Y ACCIONES === */
 .acciones {
   display: flex;
   gap: 10px;
   margin: 18px 0;
-}
-
-.btn {
-  display: inline-block;
-  padding: 8px 12px;
-  border-radius: 10px;
-  text-decoration: none;
-  border: 1px solid #333;
-  background: #1e1e1e;
-  color: #e0e0e0;
-}
-
-.btn:hover {
-  background: #272727;
-}
-
-.btn-prim {
-  background: #bb86fc;
-  color: #121212;
-  border-color: #a175f2;
-}
-
-.btn-prim:hover {
-  background: #a175f2;
-}
-
-/* --- Botones de la pantalla de resultado --- */
-.botones-final {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  margin-top: 24px;
 }
 
 .btn {
@@ -152,6 +53,7 @@ a { pointer-events: auto; }
   text-decoration: none;
   font-weight: 500;
   transition: all 0.2s ease;
+  cursor: pointer;
 }
 
 .btn:hover {
@@ -159,18 +61,17 @@ a { pointer-events: auto; }
   transform: translateY(-1px);
 }
 
-/* Botón principal (violeta brillante) */
 .btn-prim {
   background: #bb86fc;
   border-color: #a175f2;
   color: #121212;
   font-weight: 600;
 }
+
 .btn-prim:hover {
   background: #a175f2;
 }
 
-/* Botón secundario (gris oscuro) */
 .btn-sec {
   background: #2c2c2c;
   border: 1px solid #555;
@@ -180,105 +81,369 @@ a { pointer-events: auto; }
   background: #3a3a3a;
 }
 
-/* 🔹 Contenedor principal de opciones (fila de 3) */
+/* Botón de borrar caso */
+.btn.btn-sec[onclick*="borrarCaso"] {
+  background: #4a0000;
+  border: 1px solid #ff5555;
+  color: #fff;
+  padding: 8px 12px; /* Más pequeño para la tabla */
+}
+.btn.btn-sec[onclick*="borrarCaso"]:hover {
+  background: #700000;
+  border-color: #ff8888;
+}
+
+/* === FORMULARIOS (index.html) === */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+fieldset {
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 20px;
+}
+legend {
+  color: #03dac6;
+  font-weight: bold;
+  padding: 0 10px;
+}
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+input[type="text"], input[type="number"], select {
+  width: 100%;
+  padding: 10px;
+  background-color: #333;
+  border: 1px solid #555;
+  border-radius: 4px;
+  color: #e0e0e0;
+  box-sizing: border-box;
+}
+input::placeholder {
+  color: #aaaaaa;
+}
+input:disabled, select:disabled, button:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+.sintomas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+}
+.checkbox-container {
+  display: flex;
+  align-items: center;
+}
+.checkbox-container input {
+  margin-right: 10px;
+}
+.checkbox-container input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #bb86fc;
+}
+
+/* === PÁGINA DE RESULTADO (resultado.html) === */
+.resultado-header {
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+.criticidad-critica {
+  background-color: #cf6679;
+  color: #121212;
+  border: 2px solid #ff9e9e;
+}
+.criticidad-alta {
+  background-color: #ff7043;
+  color: #121212;
+}
+.criticidad-media {
+  background-color: #ffb74d;
+  color: #121212;
+}
+.criticidad-baja {
+  background-color: #4db6ac;
+  color: #121212;
+}
+
+.recomendacion-principal {
+  background-color: #2a2a2a;
+  padding: 15px;
+  border-left: 5px solid #bb86fc;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+.alerta-urgente {
+  border-color: #cf6679;
+  background-color: #4d1d28;
+}
+
+.diagnosticos-container {
+  display: grid;
+  gap: 12px;
+}
+.diagnostico-card {
+  background-color: #2c2c2c;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  border: 1px solid #444;
+}
+.diagnostico-card h4 {
+  margin: 0 0 6px;
+  color: #e6d6ff;
+}
+.diagnostico-card p {
+  margin: 4px 0;
+}
+.categoria-red { color: #81d4fa; }
+.categoria-hardware { color: #ef9a9a; }
+.categoria-software { color: #a5d6a7; }
+.categoria-energia { color: #fff59d; }
+.categoria-configuracion { color: #ce93d8; }
+
+.error-box {
+  background-color: #b00020;
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+/* === TARJETAS (Usadas en Panel, Stats y Casos) === */
+.card {
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  width: 100%;
+  box-sizing: border-box; /* Importante para que el padding no rompa el ancho */
+}
+
+/* === PANEL (panel.html) === */
 .opciones {
   display: flex;
   justify-content: center;
   align-items: stretch;
   gap: 30px;
-  flex-wrap: nowrap;       /* Mantiene una sola fila */
+  flex-wrap: wrap; /* Cambiado a 'wrap' para mejor responsive */
   margin-top: 40px;
-  max-width: 1300px;       /* 🔸 Aumenta el ancho máximo */
+  max-width: 1300px;
   margin-left: auto;
   margin-right: auto;
   padding: 0 20px;
 }
 
-/* 🔹 Cada tarjeta ocupa igual espacio dentro del contenedor */
 .opciones .card {
   flex: 1;
-  min-width: 360px;        /* 🔸 Más ancha */
+  min-width: 300px; /* Ajustado para mejor responsive */
   max-width: 400px;
-  background: #1e1e1e;
-  border: 1px solid #333;
-  border-radius: 14px;
   padding: 24px 20px;
   text-align: center;
-  box-shadow: 0 2px 10px rgba(0,0,0,.4);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .opciones .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 4px 16px rgba(187,134,252,.4);
+  box-shadow: 0 4px 16px rgba(187, 134, 252, .4);
 }
 
-/* 🔹 Títulos dentro de las tarjetas */
 .opciones .card h2 {
-  color: #bb86fc;
   font-size: 1.3rem;
-  margin-bottom: 10px;
 }
 
-/* 🔹 Botones */
 .opciones .btn {
   display: block;
-  width: 100%;
+  width: auto; /* Dejar que el padding defina el ancho */
   margin-top: 18px;
-  padding: 12px 0;
+}
+
+/* === ESTADÍSTICAS (stats.html) === */
+.totales {
+  color: #aaa;
+  margin: 0 0 16px;
+  font-size: .95rem;
+}
+
+#err {
+  margin: 12px 0;
+  padding: 12px;
   border-radius: 10px;
-  background: #bb86fc;
-  color: #121212;
-  text-decoration: none;
-  font-weight: 600;
-  border: none;
-  transition: background 0.25s ease;
+  background: #4d1d28;
+  color: #ffd6db;
+  border: 1px solid #cf6679;
+  display: none;
+  font-size: .9rem;
 }
 
-.opciones .btn:hover {
-  background: #a175f2;
+.graficos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 24px;
+  align-items: start;
+  justify-items: center;
 }
 
-/* 🔹 Responsive (pantallas menores a 1200px bajan a 2 columnas) */
-@media (max-width: 1200px) {
-  .opciones {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
+.graficos-grid .card {
+  max-width: 400px;
 }
 
-/* 🔹 Responsive (pantallas menores a 800px bajan a 1 columna) */
-@media (max-width: 800px) {
-  .opciones .card {
-    min-width: 300px;
-  }
-}
-
-/* 🔹 Ajuste del título principal para alinear con las tarjetas */
-h1 {
-  margin-left: calc((100% - 1300px) / 2 + 20px);
-  color: #bb86fc;
-  font-size: 2rem;
-  margin-top: 20px;
-  margin-bottom: 10px;
-}
-
-/* 🔹 Línea decorativa debajo del título (tu hr existente) */
-h1 + hr {
-  margin-left: calc((100% - 1300px) / 2 + 20px);
-  width: 1300px;
-  border: none;
-  height: 1.5px;
-  background: #333;
-  margin-top: 0;
-  margin-bottom: 20px;
-}
-
-/* 🔹 Subtítulo debajo del título */
-.subtexto-panel {
-  margin-left: calc((100% - 1300px) / 2 + 20px);
-  color: #e0e0e0;
+.graficos-grid .card h3 {
+  margin: 0 0 10px !important;
+  border: 0 !important;
   font-size: 1rem;
-  margin-bottom: 20px;
-  max-width: 1300px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.card canvas {
+  width: 100% !important;
+  height: 400px !important;
+  display: block;
+  background: #121212;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+/* === TABLA DE CASOS (casos.html) === */
+.filtro {
+  margin: 12px 0 16px;
+}
+.filtro input {
+  width: 100%;
+  max-width: 380px;
+  padding: 8px 10px;
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 10px;
+  color: #e0e0e0;
+}
+
+.card-tabla { /* Renombré el card de la tabla para evitar conflictos */
+  padding: 12px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #2a2a2a;
+  vertical-align: top;
+}
+th {
+  color: #bb86fc;
+  text-align: left;
+  font-weight: 600;
+}
+tr:hover td {
+  background: #1a1a1a;
+}
+.muted {
+  color: #aaa;
+  font-size: .9rem;
+}
+.pill {
+  display: inline-block;
+  margin: 2px 4px 2px 0;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #2a2a2a;
+  border: 1px solid #333;
+}
+
+/* === UTILIDADES === */
+:focus {
+  outline: 2px solid #03dac6;
+  outline-offset: 2px;
+}
+
+/* Contenedor para la tarjeta principal */
+.opcion-principal {
+  display: flex;
+  justify-content: center; /* Centra la tarjeta */
+  margin-top: 20px;
+}
+
+/* Hacemos la tarjeta principal un poco más ancha */
+.opcion-principal .card {
+  max-width: 400px; 
+  width: 100%;
+}
+
+/* Contenedor para los botones secundarios */
+.opciones-secundarias {
+  display: flex;
+  justify-content: center; /* Centra los botones */
+  gap: 20px;               /* Espacio entre los botones */
+  margin-top: 30px;
+  flex-wrap: wrap; /* Para que se vea bien en móviles */
+}
+
+/* Estilo para los botones secundarios */
+.opciones-secundarias .btn {
+  /* Usamos un estilo secundario que ya tienes */
+  background: #2c2c2c;
+  border: 1px solid #555;
+  color: #eee;
+}
+
+.opciones-secundarias .btn:hover {
+  background: #3a3a3a;
+}
+
+/* === ESTILOS PARA EL DESPLEGABLE DE RESULTADO.HTML === */
+
+.detalles-diagnostico {
+  /* Le damos un fondo y borde, como una tarjeta */
+  background-color: #2c2c2c;
+  border: 1px solid #444;
+  border-radius: 6px;
+  margin-top: 25px; /* Separación de la recomendación principal */
+}
+
+.detalles-diagnostico[open] {
+  /* Cuando está abierto, que el borde inferior se mantenga */
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.detalles-diagnostico summary {
+  /* Este es el título clickeable */
+  padding: 10px 15px;  
+  font-size: 1rem;     
+  font-weight: 500;      /
+  color: #e0e0e0;       
+  cursor: pointer; 
+  display: block; 
+
+/* Opcional: Quitar el borde azul de "foco" */
+.detalles-diagnostico summary:focus {
+  outline: none;
+}
+
+/* Opcional: Añadir un pequeño indicador de flecha */
+.detalles-diagnostico summary::before {
+  content: '► '; /* Flecha apuntando a la derecha (cerrado) */
+  font-size: 0.9rem;
+  margin-right: 8px;
+}
+
+.detalles-diagnostico[open] summary::before {
+  content: '▼ '; /* Flecha apuntando hacia abajo (abierto) */
+}
+
+/* El contenido (el contenedor de las tarjetas) */
+.detalles-diagnostico .diagnosticos-container {
+  padding: 0 15px 15px 15px; /* Padding para el contenido */
+  border-top: 1px solid #444; /* Línea que separa el título del contenido */
 }
